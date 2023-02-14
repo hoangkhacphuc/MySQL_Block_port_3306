@@ -1,6 +1,18 @@
 # Fix Blocked Port 3306 for MySQL
 This script is designed to fix the blocked port 3306 for MySQL.
 
+    [mysql] 	Error: MySQL shutdown unexpectedly.
+    [mysql] 	This may be due to a blocked port, missing dependencies, 
+    [mysql] 	improper privileges, a crash, or a shutdown by another method.
+    [mysql] 	Press the Logs button to view error logs and check
+    [mysql] 	the Windows Event Viewer for more clues
+    [mysql] 	If you need more help, copy and post this
+    [mysql] 	entire log window on the forums
+
+<p align="center">
+  <img src="./bug.png" alt="bug" />
+</p>
+
 ### Author
 This script was created by Hoang Khac Phuc. For questions or feedback, please contact the author at fb.com/hoangkhacphuc.dev.
 
