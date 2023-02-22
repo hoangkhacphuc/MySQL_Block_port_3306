@@ -31,6 +31,7 @@ This script is intended to fix the blocked port 3306 for MySQL by performing the
 - Check if the folder `'./data_old'` exists and delete it.
 - Rename the folder `'./data'` to `'./data_old'`.
 - Copy the folder `'./backup'` to `'./data'`.
+- Delete file `'ibdata1'` in `'./data'`.
 - Create the file `'exclude_folders.txt'` to exclude default folders contained in folder `'./backup'`.
 - Create a folder `'./data2'` to contain the folders that need to be converted to `'./data'` temporarily.
 - Create the file `'list_folders.txt'` to save the list of folders in `'./data_old'`.
@@ -41,7 +42,7 @@ This script is intended to fix the blocked port 3306 for MySQL by performing the
 - Delete the files `'exclude_folders.txt'` and `'list_folders.txt'`.
 
 ### How to Use
-To run this program, you need to download it and unzip it. Then copy the file `'fix_blocked_port_mysql.bat'` and place it in the `'\xampp\mysql'` folder corresponding to where you installed it. Finally, just double click on the 'fix_blocked_port_mysql.bat' file to run it.
+To run this program, you need to download it and unzip it. Then copy the file `'fix_blocked_port_mysql.bat'` and place it in the `'\xampp\mysql'` folder corresponding to where you installed it. Finally, just double click on the `'fix_blocked_port_mysql.bat'` file to run it.
 
 >Note: You can find it by opening the Xampp Control Panel and selecting Explorer on the right.
 

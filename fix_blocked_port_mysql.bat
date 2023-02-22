@@ -10,6 +10,7 @@
 @REM                            - Check if folder './data_old' exists and delete it.
 @REM                            - Rename folder './data' to './data_old'.
 @REM                            - Copy folder './backup' to './data'.
+@REM                            - Delete file 'ibdata1' in './data'.
 @REM                            - Create file 'exclude_folders.txt' to exclude default folders contained in folder './backup'.
 @REM                            - Create a folder './data2' to contain the folders that need to be converted to './data' temporarily.
 @REM                            - Create file 'list_folders.txt' to save list of folders in './data_old'.
@@ -110,6 +111,17 @@ if exist ".\data_old" (
         exit /b  
     )
     echo Checked: Folder './backup' has been copied to './data'.
+
+    REM Delete file 'ibdata1' in './data'
+    echo Deleting file 'ibdata1' in './data'...
+    del ".\data\ibdata1"
+    if ERRORLEVEL 1 (
+        echo Checked: File 'ibdata1' has not been deleted.
+        echo.
+        pause
+        exit /b  
+    )
+    echo Checked: File 'ibdata1' has been deleted.
 
     REM Create file 'exclude_folders.txt' to exclude folders in './data_old' from copying to './data'
     if exist ".\exclude_folders.txt" (
