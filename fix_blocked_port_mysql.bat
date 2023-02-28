@@ -71,10 +71,10 @@ if exist ".\backup" (
 
 REM Check if folder './data_old' exists and delete it
 if exist ".\data_old" (
-    goto confirm
+    goto :confirm
 ) else (
     echo Checked: Folder './data_old' does not exist.
-    goto end
+    goto :renameFolderDataOld
 )
 
 :confirm
@@ -83,13 +83,15 @@ if exist ".\data_old" (
     if /i "%input%"=="Y" (
         rmdir /s /q ".\data_old"
         echo Folder './data_old' has been deleted.
+        goto :renameFolderDataOld
     ) else (
         echo Checked: Folder './data_old' has not been deleted.
         echo.
         pause
         exit /b  
     )
-:end
+
+:renameFolderDataOld
     REM Rename folder './data' to './data_old'
     echo Renaming folder './data' to './data_old'...
     ren ".\data" "data_old"
@@ -100,7 +102,9 @@ if exist ".\data_old" (
         exit /b  
     )
     echo Checked: Folder './data' has been renamed to './data_old'.
+    goto :dataMigration
 
+:dataMigration
     REM Copy folder './backup' to './data'
     echo Copying folder './backup' to './data'...
     xcopy ".\backup" ".\data" /E /I /Y /Q
