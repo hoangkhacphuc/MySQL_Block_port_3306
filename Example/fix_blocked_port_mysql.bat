@@ -1,3 +1,26 @@
+@REM            Issue: Fix blocked port 3306 for MySQL
+@REM            Author: Hoang Khac Phuc
+@REM            Contact: fb.com/hoangkhacphuc.dev
+@REM            Date: 14-02-2023
+@REM            Version: 1.0
+@REM            Description:    This script will fix the blocked port 3306 for MySQL.
+@REM                            - Check if MySQL is running.
+@REM                            - Check if port 3306 is blocked.
+@REM                            - Check if current location is \xampp\mysql.
+@REM                            - Check if folder './data_old' exists and delete it.
+@REM                            - Rename folder './data' to './data_old'.
+@REM                            - Copy folder './backup' to './data'.
+@REM                            - Delete file 'ibdata1' in './data'.
+@REM                            - Create file 'exclude_folders.txt' to exclude default folders contained in folder './backup'.
+@REM                            - Create a folder './data2' to contain the folders that need to be converted to './data' temporarily.
+@REM                            - Create file 'list_folders.txt' to save list of folders in './data_old'.
+@REM                            - Get the list of folders in './data_old' and save to file 'list_folders.txt'.
+@REM                            - Copy folders from './data_old' to './data2' except the folders in 'exclude_folders.txt'.
+@REM                            - Copy folders from './data2' to './data' except the folders in 'exclude_folders.txt'.
+@REM                            - Delete folder './data2'.
+@REM                            - Delete file 'exclude_folders.txt' and 'list_folders.txt'.
+
+
 @echo off
 setlocal EnableDelayedExpansion
 TITlE Fixing blocked port 3306 for MySQL
@@ -48,10 +71,10 @@ if exist ".\backup" (
 
 REM Check if folder './data_old' exists and delete it
 if exist ".\data_old" (
-    goto confirm
+    goto :confirm
 ) else (
     echo Checked: Folder './data_old' does not exist.
-    goto end
+    goto :renameFolderDataOld
 )
 
 :confirm
@@ -60,13 +83,15 @@ if exist ".\data_old" (
     if /i "%input%"=="Y" (
         rmdir /s /q ".\data_old"
         echo Folder './data_old' has been deleted.
+        goto :renameFolderDataOld
     ) else (
         echo Checked: Folder './data_old' has not been deleted.
         echo.
         pause
         exit /b  
     )
-:end
+
+:renameFolderDataOld
     REM Rename folder './data' to './data_old'
     echo Renaming folder './data' to './data_old'...
     ren ".\data" "data_old"
@@ -77,7 +102,9 @@ if exist ".\data_old" (
         exit /b  
     )
     echo Checked: Folder './data' has been renamed to './data_old'.
+    goto :dataMigration
 
+:dataMigration
     REM Copy folder './backup' to './data'
     echo Copying folder './backup' to './data'...
     xcopy ".\backup" ".\data" /E /I /Y /Q
@@ -88,6 +115,17 @@ if exist ".\data_old" (
         exit /b  
     )
     echo Checked: Folder './backup' has been copied to './data'.
+
+    REM Delete file 'ibdata1' in './data'
+    echo Deleting file 'ibdata1' in './data'...
+    del ".\data\ibdata1"
+    if ERRORLEVEL 1 (
+        echo Checked: File 'ibdata1' has not been deleted.
+        echo.
+        pause
+        exit /b  
+    )
+    echo Checked: File 'ibdata1' has been deleted.
 
     REM Create file 'exclude_folders.txt' to exclude folders in './data_old' from copying to './data'
     if exist ".\exclude_folders.txt" (
